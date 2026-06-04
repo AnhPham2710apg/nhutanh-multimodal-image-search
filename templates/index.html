@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Search - SigLIP 2</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Image Search Engine</h1>
+            <p>Powered by SigLIP 2 + FAISS</p>
+        </header>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Enter your search query (e.g., 'cute cat', 'dog playing')">
+            <button id="searchBtn">Search</button>
+        </div>
+
+        <div id="loading" class="loading hidden">Searching...</div>
+        <div id="error" class="error hidden"></div>
+
+        <div id="results" class="results-grid"></div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
