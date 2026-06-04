@@ -39,6 +39,7 @@ header p {
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
+    position: relative;
 }
 
 #searchInput {
@@ -70,7 +71,7 @@ header p {
     text-align: center;
     padding: 20px;
     font-size: 1.2rem;
-    color: white;
+    color: black;
 }
 
 .error {
@@ -146,4 +147,19 @@ header p {
 
 .find-similar-btn:hover {
     background: #5568d3;
+}
+
+.reference-card {
+    border: 2px solid #e74c3c; /* Viền đỏ nổi bật */
+    box-shadow: 0 8px 15px rgba(231, 76, 60, 0.2);
+}
+
+.reference-header {
+    background-color: #e74c3c;
+    color: white;
+    text-align: center;
+    padding: 8px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
 }

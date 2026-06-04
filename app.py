@@ -32,20 +32,14 @@ print(f"Loaded {len(dinov3_ids)} images for image search")
 # Create mapping from image_id to dinov3 embedding index
 dinov3_id_to_idx = {img_id: idx for idx, img_id in enumerate(dinov3_ids)}
 
-print("Loading SigLIP 2 model (lazy)...")
-processor = None
-model = None
+print("Loading SigLIP 2 model...")
+processor = AutoProcessor.from_pretrained(MODEL_ID)
+model = AutoModel.from_pretrained(MODEL_ID, torch_dtype=torch.float32, low_cpu_mem_usage=True)
+model.eval()
 device = "cpu"
+print("SigLIP 2 model loaded and ready!")
 
 def embed_text(text: str) -> np.ndarray:
-    global processor, model
-    if model is None:
-        print("Loading SigLIP 2 model on first use...")
-        processor = AutoProcessor.from_pretrained(MODEL_ID)
-        model = AutoModel.from_pretrained(MODEL_ID, torch_dtype=torch.float32, low_cpu_mem_usage=True)
-        model.eval()
-        print("Model loaded")
-    
     inputs = processor(text=[text], return_tensors="pt", padding="max_length", max_length=64, truncation=True)
     inputs = {k: v.to(device) for k, v in inputs.items()}
     with torch.no_grad():
@@ -54,7 +48,7 @@ def embed_text(text: str) -> np.ndarray:
         text_features = F.normalize(text_features, p=2, dim=-1)
     return text_features.cpu().numpy()
 
-print("Ready (model will load on first text search)")
+print("Ready for searches!")
 
 @app.route('/')
 def home():

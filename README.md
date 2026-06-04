@@ -2,6 +2,17 @@
 
 Flask-based image search engine using SigLIP 2 for text-to-image search and DINOv3 for visual similarity search.
 
+## Screenshots
+
+### Homepage
+![Homepage](screenshots/homepage.png)
+
+### Text Search Results
+![Text Search Results](screenshots/text_search_results.png)
+
+### Visual Similarity Search
+![Similar Search with Reference](screenshots/similar_search_with_reference.png)
+
 ## Setup
 
 1. Install dependencies (Python 3.11+):
@@ -9,7 +20,7 @@ Flask-based image search engine using SigLIP 2 for text-to-image search and DINO
 pip install -r requirements.txt
 ```
 
-2. **Add your images**: Place your images in `dataset/test_set/cats/` directory. The app expects image files (jpg, jpeg, png) in this location.
+2. **Download dataset**: Download the cats images from [Google Drive](https://drive.google.com/file/d/1Ehx9GzasjR576Cpz6oWU2YNzrnnLHb0w/view?usp=sharing), extract the zip file and place images in `dataset/test_set/cats/` directory.
 
 3. Prepare embeddings (run ONCE after adding images, takes ~10-20 min on CPU):
 ```bash
