@@ -11,6 +11,17 @@ data/embeddings.npz
 data/dinov3_embeddings.npz
 data/faiss_index.bin
 data/dinov3_faiss_index.bin
+data/kaggle_outputs/
+
+# Kaggle pipeline temporary files
+temp_kernel_*/
+temp_output_*/
+kernels/
+
+# Result files (keep folder but ignore large files)
+result/*.npz
+result/*.bin
+result/*.log
 
 # Python
 __pycache__/

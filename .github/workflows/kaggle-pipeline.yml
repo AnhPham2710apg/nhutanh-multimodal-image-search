@@ -1,0 +1,81 @@
+name: Kaggle Embedding Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      notebook_type:
+        description: 'Notebook type'
+        required: true
+        type: choice
+        options:
+          - siglip2
+          - dinov3
+      dataset_slug:
+        description: 'Kaggle dataset slug'
+        required: true
+        default: 'chetankv/dogs-cats-images'
+  push:
+    paths:
+      - 'notebook/**'
+      - '.github/workflows/kaggle-pipeline.yml'
+
+jobs:
+  run-kaggle-pipeline:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install kaggle
+      
+      - name: Setup Kaggle credentials
+        env:
+          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+        run: |
+          mkdir -p ~/.kaggle
+          echo '{"username":"'$KAGGLE_USERNAME'","key":"'$KAGGLE_KEY'"}' > ~/.kaggle/kaggle.json
+          chmod 600 ~/.kaggle/kaggle.json
+      
+      - name: Determine notebook type
+        id: notebook
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "type=${{ inputs.notebook_type }}" >> $GITHUB_OUTPUT
+            echo "dataset=${{ inputs.dataset_slug }}" >> $GITHUB_OUTPUT
+          else
+            # Default to siglip2 for push events
+            echo "type=siglip2" >> $GITHUB_OUTPUT
+            echo "dataset=chetankv/dogs-cats-images" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Run Kaggle pipeline
+        run: |
+          python kaggle_pipeline_v2.py \
+            --type ${{ steps.notebook.outputs.type }} \
+            --dataset ${{ steps.notebook.outputs.dataset }}
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: embeddings-${{ steps.notebook.outputs.type }}
+          path: data/
+          retention-days: 7
+      
+      - name: Commit results (optional)
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --staged --quiet || git commit -m "chore: update embeddings from ${{ steps.notebook.outputs.type }}"
+          # Uncomment to auto-push:
+          # git push
