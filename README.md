@@ -35,8 +35,8 @@ uv run python kaggle_pipeline.py --type siglip2 --auto-download
 
 ```bash
 # Clone repository
-git clone <your-repo-url>
-cd test_kaggle
+git clone https://github.com/AnhPham2710apg/nhutanh-multimodal-image-search
+cd nhutanh-multimodal-image-search
 
 # Install dependencies with uv
 uv sync
@@ -134,16 +134,18 @@ uv run python kaggle_pipeline.py --type siglip2 \
 
 ```
 ├── notebook/
-│   ├── siglip2-embed.ipynb      # Optimized SigLIP2 notebook (T4x2 support)
-│   └── dino-v3-embed.ipynb      # DINOv3 with 3-tier secret fallback
-├── result/                       # Pipeline outputs (gitignored)
-├── secrets/                      # Private dataset source (gitignored)
+│   ├── siglip2-embed.ipynb          # Optimized SigLIP2 notebook (T4x2 support)
+│   ├── dino-v3-embed.ipynb          # DINOv3 with 3-tier secret fallback
+│   └── dino-v3-dense-embed.ipynb   # DINOv3 dense patch-mean (material search)
+├── result/                           # Pipeline outputs (gitignored)
+├── secrets/                          # Private dataset source (gitignored)
 │   ├── HF_TOKEN.txt
 │   └── dataset-metadata.json
-├── kaggle_pipeline.py            # Main pipeline (push + monitor + download)
-├── kaggle_download.py            # Standalone download utility
-├── .env.example                  # Local dev secret template
-├── pyproject.toml                # uv dependencies
+├── app.py                            # Flask web app
+├── kaggle_pipeline.py               # Main pipeline (push + monitor + download)
+├── kaggle_download.py               # Standalone download utility
+├── .env.example                     # Local dev secret template
+├── pyproject.toml                   # uv dependencies
 └── README.md
 ```
 
@@ -229,16 +231,12 @@ jobs:
 ## Development
 
 ```bash
-# Local embedding generation (CPU)
-uv run python prepare_embeddings.py
+# Local embedding generation (CPU) — coming soon
+# uv run python prepare_embeddings.py
 
 # Image search web app
 uv run python app.py
 # Open http://localhost:5000
-
-# Benchmark models
-uv run python benchmark_siglip2.py
-uv run python benchmark_dinov3.py
 ```
 
 ## License
@@ -255,5 +253,4 @@ PRs welcome. Please ensure:
 ## Support
 
 - Kaggle API docs: https://github.com/Kaggle/kaggle-api
-- Factory AI docs: https://docs.factory.ai
-- Issues: [GitHub Issues](your-repo-url/issues)
+- Issues: [GitHub Issues](https://github.com/AnhPham2710apg/nhutanh-multimodal-image-search/issues)

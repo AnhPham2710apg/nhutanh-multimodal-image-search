@@ -37,6 +37,12 @@ with open(siglip_indices[0], 'rb') as f:
     siglip_index = pickle.load(f)
 print(f"Loaded {len(image_ids)} images for text search")
 
+# Build id→relative-path lookup from SigLIP metadata (shared across all endpoints)
+id_to_path = {
+    img_id: img_path.split('dogs-cats-images/')[-1]
+    for img_id, img_path in zip(image_ids, image_paths)
+}
+
 # Keep file paths for lazy loading (memory optimization for large datasets)
 siglip_embedding_file = siglip_files[0]
 dinov3_embedding_file = None
@@ -157,8 +163,8 @@ def search_similar():
         result_id = dinov3_ids[idx]
         if result_id == image_id:
             continue
-        
-        img_relative = f"dataset/test_set/cats/{result_id}"
+
+        img_relative = id_to_path.get(result_id, f"dataset/test_set/cats/{result_id}")
         results.append({
             'rank': len(results) + 1,
             'image_id': result_id,
@@ -200,7 +206,7 @@ def search_similar_material():
         if result_id == image_id:
             continue
 
-        img_relative = f"dataset/test_set/cats/{result_id}"
+        img_relative = id_to_path.get(result_id, f"dataset/test_set/cats/{result_id}")
         results.append({
             'rank': len(results) + 1,
             'image_id': result_id,

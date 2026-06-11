@@ -290,7 +290,7 @@ def main():
     # If push-only, exit here
     if args.push_only:
         print(f"\n✓ Push completed. Monitor manually or run:")
-        print(f"  python kaggle_pipeline_unified.py --type {args.type} --monitor-only")
+        print(f"  python kaggle_pipeline.py --type {args.type} --monitor-only")
         return 0
     
     # Step 2: Monitor execution

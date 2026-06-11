@@ -79,9 +79,7 @@ async function findSimilar(e) {
 
         const data = await response.json();
         searchInput.value = `Similar to: ${imageId}`;
-        
-        // Truyền thêm imageId vào để render thẻ đầu tiên
-        displayResults(data.results, imageId);
+        displayResults(data.results, imageId, 'similar');
     } catch (err) {
         showError('Similar search failed: ' + err.message);
     } finally {
@@ -147,9 +145,6 @@ function displayResults(items, referenceImageId = null, searchType = 'similar') 
         const card = document.createElement('div');
         card.className = 'result-card';
 
-        const badgeLabel = searchType === 'material' ? 'Find Material' : 'Find Similar';
-        const badgeClass = searchType === 'material' ? 'find-material-btn' : 'find-similar-btn';
-        
         card.innerHTML = `
             <img src="${item.image_url}" alt="${item.image_id}">
             <div class="result-info">
