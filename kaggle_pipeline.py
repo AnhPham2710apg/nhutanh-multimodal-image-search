@@ -16,6 +16,12 @@ def push_notebook(api, notebook_type, dataset_slug, username):
     """Push notebook and return version info"""
     print(f"[PUSH] Pushing {notebook_type} notebook to Kaggle...")
     
+    # Validate username
+    if not username or username.strip() == "":
+        raise ValueError(f"Kaggle username is empty or None. Check your credentials setup.")
+    
+    print(f"  Username: {username}")
+    
     # Prepare kernel directory
     kernel_dir = Path(f"./temp_kernel_{notebook_type}")
     kernel_dir.mkdir(parents=True, exist_ok=True)

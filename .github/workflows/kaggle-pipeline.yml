@@ -41,9 +41,15 @@ jobs:
           KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
           KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
         run: |
+          if [ -z "$KAGGLE_USERNAME" ] || [ -z "$KAGGLE_KEY" ]; then
+            echo "Error: KAGGLE_USERNAME or KAGGLE_KEY secret is not set"
+            echo "Please set these secrets in repository settings: Settings > Secrets > Actions"
+            exit 1
+          fi
           mkdir -p ~/.kaggle
-          echo '{"username":"'$KAGGLE_USERNAME'","key":"'$KAGGLE_KEY'"}' > ~/.kaggle/kaggle.json
+          echo "{\"username\":\"$KAGGLE_USERNAME\",\"key\":\"$KAGGLE_KEY\"}" > ~/.kaggle/kaggle.json
           chmod 600 ~/.kaggle/kaggle.json
+          echo "Kaggle credentials configured for user: $KAGGLE_USERNAME"
       
       - name: Determine notebook type
         id: notebook
